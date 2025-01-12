@@ -9,8 +9,6 @@ class BooksController < ApplicationController
   end
 
   def show
-    puts "SHOW BOOK"
-    puts @book
     if @book
       render :book
     else
@@ -42,9 +40,7 @@ class BooksController < ApplicationController
   private
 
   def find_book
-    puts "IN FIND BOOK"
     @book = Book.find(params[:id])
-    puts @book
     @book
   end
 
