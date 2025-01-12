@@ -1,1 +1,1 @@
-json.content format_content(@book.content)
+json.(@book, :id, :name, :created_at, :updated_at)

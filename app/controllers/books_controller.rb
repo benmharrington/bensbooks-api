@@ -1,12 +1,21 @@
+# frozen_string_literal: true
+
 class BooksController < ApplicationController
   before_action :find_book, only: %i[show update]
   allow_unauthenticated_access only: %i[ index show ]
   def index
     @books = Book.all
+    render :index
   end
 
   def show
-    render :book
+    puts "SHOW BOOK"
+    puts @book
+    if @book
+      render :book
+    else
+      render json: { errors: [ "Book not found" ] }, status: :not_found
+    end
   end
 
   def update
@@ -33,7 +42,10 @@ class BooksController < ApplicationController
   private
 
   def find_book
+    puts "IN FIND BOOK"
     @book = Book.find(params[:id])
+    puts @book
+    @book
   end
 
   def book_params
