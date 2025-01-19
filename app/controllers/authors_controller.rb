@@ -4,7 +4,7 @@ class AuthorsController < ApplicationController
   before_action :find_author, only: %i[show update books destroy]
   allow_unauthenticated_access only: %i[ index show ]
   def index
-    @authors = author.all
+    @authors = Author.all
     render :index
   end
 
