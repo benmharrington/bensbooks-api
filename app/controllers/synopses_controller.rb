@@ -2,7 +2,9 @@
 
 class SynopsesController < ApplicationController
   before_action :find_synopsis, only: %i[show update]
-  allow_unauthenticated_access only: %i[ index show ]
+  # TODO: remove create once auth is added
+  allow_unauthenticated_access only: %i[ index show create ]
+  # TODO: validate length of content (once decided)
   def index
     @synopses = Synopsis.all
     render :index
@@ -25,7 +27,8 @@ class SynopsesController < ApplicationController
   end
 
   def create
-    @synopsis = synopses.new(synopsis_params)
+    @book = Book.find(params[:book_id])
+    @synopsis = @book.synopses.new(synopsis_params)
     if @synopsis.save
       render json: @synopsis, status: :ok
     else
