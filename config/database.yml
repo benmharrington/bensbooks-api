@@ -96,3 +96,7 @@ production:
     <<: *primary_production
     database: bensbooks_api_production_cable
     migrations_paths: db/cable_migrate
+  connect_timeout: 5
+  variables:
+    statement_timeout: 15s
+    lock_timeout: 10s
