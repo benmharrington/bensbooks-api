@@ -2,7 +2,8 @@
 
 class AuthorsController < ApplicationController
   before_action :find_author, only: %i[show update books destroy]
-  allow_unauthenticated_access only: %i[ index show ]
+  # TODO: remove create from below once authentication is set up
+  allow_unauthenticated_access only: %i[ index show create ]
   def index
     @authors = Author.all
     render :index
@@ -30,7 +31,7 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    @author = author.new(author_params)
+    @author = Author.new(author_params)
     if @author.save
       render :author, status: :ok
     else
