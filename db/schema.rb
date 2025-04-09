@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_20_222057) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_09_233949) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -29,6 +29,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_20_222057) do
     t.index ["author_id"], name: "index_books_on_author_id"
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "book_id"
+    t.integer "score", null: false
+    t.text "review"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_ratings_on_book_id"
+    t.index ["user_id", "book_id"], name: "index_ratings_on_user_id_and_book_id", unique: true
+    t.index ["user_id"], name: "index_ratings_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "ip_address"
@@ -41,12 +53,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_20_222057) do
   create_table "synopses", force: :cascade do |t|
     t.text "content"
     t.bigint "book_id", null: false
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "rating", default: 0, null: false
+    t.integer "upvotes", default: 0, null: false
+    t.integer "downvotes", default: 0, null: false
     t.index ["book_id"], name: "index_synopses_on_book_id"
     t.index ["user_id"], name: "index_synopses_on_user_id"
+  end
+
+  create_table "synopsis_votes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "synopsis_id", null: false
+    t.integer "vote", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["synopsis_id"], name: "index_synopsis_votes_on_synopsis_id"
+    t.index ["user_id", "synopsis_id"], name: "index_synopsis_votes_on_user_id_and_synopsis_id", unique: true
+    t.index ["user_id"], name: "index_synopsis_votes_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -58,7 +82,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_20_222057) do
   end
 
   add_foreign_key "books", "authors"
+  add_foreign_key "ratings", "books"
+  add_foreign_key "ratings", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "synopses", "books"
   add_foreign_key "synopses", "users"
+  add_foreign_key "synopsis_votes", "synopses"
+  add_foreign_key "synopsis_votes", "users"
 end
