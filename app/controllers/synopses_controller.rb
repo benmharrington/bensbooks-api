@@ -44,6 +44,8 @@ class SynopsesController < ApplicationController
 
   def find_synopsis
     @synopsis = Synopsis.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: { errors: [ "Synopsis not found" ] }, status: :not_found
   end
 
   def synopsis_params
