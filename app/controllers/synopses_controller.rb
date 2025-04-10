@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SynopsesController < ApplicationController
-  before_action :find_synopsis, only: %i[show update]
+  before_action :find_synopsis, only: %i[ show update destroy ]
   # TODO: remove create once auth is added
   allow_unauthenticated_access only: %i[ index show create ]
   # TODO: validate length of content (once decided)
