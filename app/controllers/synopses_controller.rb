@@ -11,11 +11,7 @@ class SynopsesController < ApplicationController
   end
 
   def show
-    if @synopsis
-      render :synopsis
-    else
-      render json: { errors: [ "Synopsis not found" ] }, status: :not_found
-    end
+    render :synopsis
   end
 
   def update
@@ -38,6 +34,7 @@ class SynopsesController < ApplicationController
 
   def destroy
     @synopsis.destroy
+    head :no_content
   end
 
   private
