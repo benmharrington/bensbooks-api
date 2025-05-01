@@ -1,9 +1,10 @@
+require_relative "../../../lib/jwt"
+
 module Authentication
   extend ActiveSupport::Concern
 
   included do
     before_action :require_authentication
-    helper_method :authenticated?
   end
 
   class_methods do
@@ -13,29 +14,27 @@ module Authentication
   end
 
   private
-    def authenticated?
-      resume_session
-    end
 
     def require_authentication
-      resume_session || request_authentication
-    end
+      token = request.headers["Authorization"]&.split(" ")&.last
+      payload = JwtUtil.decode(token)
+      user = User.find_by(id: payload["user_id"])
+      session = Session.find_by(id: payload["session_id"], user_id: user.id)
 
-    def resume_session
-      Current.session ||= find_session_by_cookie
+      if user && session
+        Current.user = user
+        Current.session = session
+      else
+        raise ActiveRecord::RecordNotFound
+      end
+    rescue JWT::DecodeError, ActiveRecord::RecordNotFound
+      Current.user = nil
+      Current.session = nil
+      render json: { error: Messages::ERROR[:unauthorized] }, status: :unauthorized
     end
 
     def find_session_by_cookie
       Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
-    end
-
-    def request_authentication
-      session[:return_to_after_authenticating] = request.url
-      redirect_to new_session_path
-    end
-
-    def after_authentication_url
-      session.delete(:return_to_after_authenticating) || root_url
     end
 
     def start_new_session_for(user)
@@ -46,7 +45,7 @@ module Authentication
     end
 
     def terminate_session
-      Current.session.destroy
+      Current.session&.destroy
       cookies.delete(:session_id)
     end
 end
