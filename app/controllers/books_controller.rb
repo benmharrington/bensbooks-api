@@ -2,7 +2,8 @@
 
 class BooksController < ApplicationController
   before_action :find_book, only: %i[show update]
-  allow_unauthenticated_access only: %i[ index show ]
+  # TODO: decide what we want to be public
+  allow_unauthenticated_access only: %i[index]
   def index
     @books = Book.all
     render :index
@@ -41,10 +42,9 @@ class BooksController < ApplicationController
 
   def find_book
     @book = Book.find(params[:id])
-    @book
   end
 
   def book_params
-    params.require(:book).permit(:title)
+    params.require(:book).permit(:title, :author_id)
   end
 end

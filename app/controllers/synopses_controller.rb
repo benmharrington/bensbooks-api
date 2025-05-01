@@ -2,8 +2,6 @@
 
 class SynopsesController < ApplicationController
   before_action :find_synopsis, only: %i[ show update destroy ]
-  # TODO: remove create once auth is added
-  allow_unauthenticated_access only: %i[ index show create ]
   # TODO: validate length of content (once decided)
   def index
     @synopses = Synopsis.all
@@ -46,6 +44,6 @@ class SynopsesController < ApplicationController
   end
 
   def synopsis_params
-    params.require(:synopsis).permit(:content)
+    params.require(:synopsis).permit(:content, :book_id, :user_id)
   end
 end
