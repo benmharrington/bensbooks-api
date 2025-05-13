@@ -18,6 +18,8 @@ class SessionsController < ApplicationController
       user.update!(refresh_token: refresh_token, refresh_token_expires_at: 1.week.from_now)
 
       cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
+      cookies.signed.permanent[:refresh_token] = { value: refresh_token, httponly: true, same_site: :lax }
+      cookies.signed.permanent[:access_token] = { value: access_token, httponly: true, same_site: :lax }
 
       Current.user = user
       Current.session = session

@@ -16,7 +16,7 @@ module Authentication
   private
 
     def require_authentication
-      token = request.headers["Authorization"]&.split(" ")&.last
+      token = cookies.signed[:access_token]
       payload = JwtUtil.decode(token)
       user = User.find_by(id: payload["user_id"])
       session = Session.find_by(id: payload["session_id"], user_id: user.id)
