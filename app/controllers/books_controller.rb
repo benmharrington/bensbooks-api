@@ -3,7 +3,6 @@
 class BooksController < ApplicationController
   before_action :find_book, only: %i[show update]
   # TODO: decide what we want to be public
-  allow_unauthenticated_access only: %i[index]
   def index
     @books = Book.all
     render :index

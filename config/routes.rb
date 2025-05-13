@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resource :session, only: %i[ create destroy ]
+  resource :sessions, only: %i[ create destroy ]
   post "tokens/refresh", to: "tokens#refresh"
   resources :passwords, param: :token
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

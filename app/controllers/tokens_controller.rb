@@ -6,9 +6,10 @@ class TokensController < ApplicationController
   allow_unauthenticated_access only: [ :refresh ]
 
   def refresh
-    user = User.find_by(refresh_token: params[:refresh_token])
+    refresh_token = cookies.signed[:refresh_token]
+    user = User.find_by(refresh_token: refresh_token)
 
-    if user&.refresh_token_valid?(params[:refresh_token])
+    if user&.refresh_token_valid?(cookies.signed[:refresh_token])
       # Generate a new access token and refresh token
       session = user.sessions.create!(
         user_agent: request.user_agent,
@@ -20,6 +21,7 @@ class TokensController < ApplicationController
 
       access_token = JwtUtil.encode(user.id, session.id)
 
+      cookies.signed.permanent[:refresh_token] = { value: new_refresh_token, httponly: true, same_site: :lax }
       cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
 
       render json: { access_token: access_token, refresh_token: new_refresh_token }, status: :ok
