@@ -7,6 +7,14 @@ class SessionsController < ApplicationController
   def new
   end
 
+  def status
+    if Current.user && Current.session
+      render json: { user: Current.user.as_json(only: [ :id, :email_address ]), session: Current.session.as_json(only: [ :id, :user_agent, :ip_address ]) }, status: :ok
+    else
+      render json: { error: Messages::ERROR[:unauthorized] }, status: :unauthorized
+    end
+  end
+
   def create
     if user = User.authenticate_by(params.permit(:email_address, :password))
       session = user.sessions.create!(
@@ -31,7 +39,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    refresh_token = params[:refresh_token] || request.headers["Authorization"]&.split(" ")&.last
+    refresh_token = cookies.signed[:refresh_token]
 
     if refresh_token.present?
       user = User.find_by(refresh_token: refresh_token)
