@@ -9,17 +9,17 @@ class SessionsController < ApplicationController
 
   def status
     if authenticated?
-      render json: { session: Current.session.as_json(only: [ :id, :user_agent, :ip_address ]), user: Current.user.as_json(only: [ :first_name, :last_name ]) }, status: :ok
+      render :user
     else
       render json: { error: Messages::ERROR[:unauthorized] }, status: :unauthorized
     end
   end
 
   def create
-    if user = User.authenticate_by(params.permit(:email_address, :password))
-      start_new_session_for(user)
+    if @user = User.authenticate_by(params.permit(:email_address, :password))
+      start_new_session_for(@user)
 
-      render json: {}, status: :ok
+      render :user, status: :ok
     else
       render json: { error: Messages::ERROR[:invalid_credentials] }, status: :unauthorized
     end

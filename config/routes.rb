@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   # TODO: sign up
   # TODO: set up api versioning
   # TODO: match all controllers/models to a test file
+  # TODO: CSRF protection/token stuff
 
   resources :books
   resources :authors

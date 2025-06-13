@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class BooksController < ApplicationController
-  allow_unauthenticated_access only: :index
-  before_action :find_book, only: %i[show update]
+  allow_unauthenticated_access only: %i[index show]
+  before_action :find_book, only: %i[show update destroy]
   # TODO: decide what we want to be public
   def index
     @books = Book.all
