@@ -6,4 +6,7 @@ class User < ApplicationRecord
   has_many :synopsis_votes
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+  validates :first_name, presence: true, length: { minimum: 1 }
+  validates :password, presence: true, length: { minimum: 8 }, confirmation: true
+  validates :email_address, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
 end

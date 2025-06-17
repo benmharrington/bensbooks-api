@@ -80,8 +80,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_25_195710) do
     t.datetime "updated_at", null: false
     t.string "refresh_token"
     t.datetime "refresh_token_expires_at"
-    t.string "first_name"
-    t.string "last_name"
+    t.string "first_name", default: "", null: false
+    t.string "last_name", default: "", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["refresh_token"], name: "index_users_on_refresh_token", unique: true
   end

@@ -1,5 +1,4 @@
 require "test_helper"
-require_relative "../../lib/jwt"
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
   setup do

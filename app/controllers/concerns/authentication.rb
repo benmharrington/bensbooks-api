@@ -1,4 +1,4 @@
-require_relative "../../../lib/jwt"
+# frozen_string_literal: true
 
 module Authentication
   extend ActiveSupport::Concern

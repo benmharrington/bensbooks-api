@@ -2,6 +2,7 @@
 
 require "jwt"
 
+# TODO: currently unused - utilize in the future for JWT-based authentication
 module JwtUtil
   def self.secret_key
     Rails.application.credentials.secret_key_base

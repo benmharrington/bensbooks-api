@@ -1,10 +1,6 @@
 require "test_helper"
-require_relative "../../lib/jwt"
-# require_relative "../helpers/session_test_helper"
 
 class BooksControllerTest < ActionDispatch::IntegrationTest
-  # include SessionTestHelper
-
   setup do
     @password = Faker::Internet.password(min_length: 8)
     @user = create(:user, password: @password, password_confirmation: @password)
