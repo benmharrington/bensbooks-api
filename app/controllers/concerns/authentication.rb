@@ -44,11 +44,11 @@ module Authentication
 
   def terminate_session
     find_session_by_cookie
-    if Current.user
-      Current.user.sessions.destroy_all
+    if Current.session
+      Current.session.destroy
     else
-      Rails.logger.debug "No current user to destroy session for."
+      Rails.logger.debug "No current session to destroy."
     end
-    cookies&.delete(:session_id)
+    cookies.encrypted.delete(:session_id)
   end
 end
