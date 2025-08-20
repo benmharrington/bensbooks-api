@@ -49,6 +49,6 @@ module Authentication
     else
       Rails.logger.debug "No current session to destroy."
     end
-    cookies.encrypted.delete(:session_id)
+    cookies&.delete(:session_id)
   end
 end
