@@ -25,7 +25,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create user with invalid params" do
     post "/registrations", params: { user: @user_params.merge(email_address: "") }
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
 
     json_response = JSON.parse(response.body)
     assert json_response["errors"].present?
@@ -37,7 +37,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
 
     post "/registrations", params: { user: @user_params }
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
 
     json_response = JSON.parse(response.body)
     assert json_response["errors"].present?

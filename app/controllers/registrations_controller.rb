@@ -8,7 +8,7 @@ class RegistrationsController < ApplicationController
       render :user, status: :created
     else
       Rails.logger.debug "Registration failed: #{@user.errors.full_messages.join(', ')}"
-      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_content
     end
   end
 

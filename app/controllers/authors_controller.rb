@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AuthorsController < ApplicationController
+  allow_unauthenticated_access only: %i[index show books]
   before_action :find_author, only: %i[show update books destroy]
   def index
     @authors = Author.all
@@ -24,7 +25,7 @@ class AuthorsController < ApplicationController
     if @author.update(author_params)
       render :author
     else
-      render json: { errors: @author.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @author.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -33,7 +34,7 @@ class AuthorsController < ApplicationController
     if @author.save
       render :author, status: :ok
     else
-      render json: { errors: @author.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @author.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -48,6 +49,6 @@ class AuthorsController < ApplicationController
   end
 
   def author_params
-    params.require(:author).permit(:name, :bio)
+    params.require(:author).permit(:name, :bio, :full_name, :birthdate, :deathdate, :birthplace, :link)
   end
 end

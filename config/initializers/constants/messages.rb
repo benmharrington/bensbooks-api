@@ -11,4 +11,9 @@ module Messages
     record_not_found: "Record not found.",
     short_password: "Password must be at least 8 characters long."
   }.freeze
+
+  VALIDATIONS = {
+    url_invalid: "provided is not valid.",
+    deathdate_invalid: "cannot be before birth date.",
+  }
 end

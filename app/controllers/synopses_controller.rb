@@ -16,7 +16,7 @@ class SynopsesController < ApplicationController
     if @synopsis.update(synopsis_params)
       render :synopsis
     else
-      render json: { errors: @synopsis.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @synopsis.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -26,7 +26,7 @@ class SynopsesController < ApplicationController
     if @synopsis.save
       render json: @synopsis, status: :ok
     else
-      render json: { errors: @synopsis.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @synopsis.errors.full_messages }, status: :unprocessable_content
     end
   end
 
